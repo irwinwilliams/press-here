@@ -1,0 +1,7 @@
+<a-entity
+  id="${id}"
+  buddy="target: ${target}" 
+  talker=$"{words}" 
+  geometry="primitive: sphere; radius: 1.25;"
+  color="#EF2D5E" shadow>
+</a-entity>
