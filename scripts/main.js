@@ -21,49 +21,6 @@
 });*/
 
 
- AFRAME.registerState({
-  initialState: {
-    enemyPosition: {x: 0, y: 1, z: 2},
-    gameStages: stages,
-    currentStageIndex:0
-  },
-
-  handlers: {
-    enemyMoved: function (state, action) {
-      state.enemyPosition = action.newPosition;
-    }
-  },
-});
-
-var generalVoice = new SpeechSynthesisUtterance('hello, there!');
-
-var selectedVoice = null;
-function play()
-{
-   voices = window.speechSynthesis.getVoices();
-
-   for (var i = 0; i < voices.length; i++) {
-        if (
-          voices[i].name.indexOf("English") > -1 &&
-          voices[i].name.indexOf("Female") > -1
-        ) {
-          selectedVoice = voices[i];
-        }
-      }
-      
-  generalVoice = new SpeechSynthesisUtterance('hello, there!');
-  generalVoice.volume = 10;
-  generalVoice.voice = selectedVoice;
-  generalVoice.rate = 0.9;
-  generalVoice.pitch = 0.9;
-  speechSynthesis.speak(generalVoice);
-  playBtnContainer.style.display = "none"
-}
-
-var voices = window.speechSynthesis.getVoices();
-
-var currentLevel=1;
-var speechSynthesis = null;
 
 AFRAME.registerComponent('leveltwo', {
   schema: {
@@ -91,7 +48,8 @@ AFRAME.registerComponent('buddy', {
     var el = this.el;
     var target = this.data.target;
     el.addEventListener("click", function() {
-      target.setAttribute("visible", true);
+      if (target)
+        target.setAttribute("visible", true);
     });
   }
 });
@@ -158,51 +116,7 @@ AFRAME.registerComponent('nextcolor', {
   }
 });
 
-AFRAME.registerComponent("talker", {
-  schema: { type: "string" },
 
-  init: function() {
-    var el = this.el;
-    //console.log(this.data);
-    //speak(this.data);
-    var wordArr = this.data.split("|");
-    // create a new queue
-    var queue = new Queue();
-    queue.enqueueAll(wordArr);
-
-    el.addEventListener("click", function() {
-      console.log(this);
-      voices = window.speechSynthesis.getVoices();
-      
-      if (el.getAttribute("visible") != true) return;
-
-      speechSynthesis = window.speechSynthesis;
-      for (var i = 0; i < voices.length; i++) {
-        if (
-          voices[i].name.indexOf("English") > -1 &&
-          voices[i].name.indexOf("Female") > -1
-        ) {
-          selectedVoice = voices[i];
-        }
-      }
-      /*let utterance = new SpeechSynthesisUtterance(words);
-      utterance.voice = selectedVoice;
-      utterance.rate = 0.9;
-      utterance.pitch = 0.9;
-      utterance.text = words;
-      utterance.volume = 10;*/
-      //console.log(utterance);
-      //speechSynthesis.speak(utterance);
-      var words = queue.dequeue();
-      if (words)
-      {
-        generalVoice.text = words;
-        speechSynthesis.speak(generalVoice);
-      }
-      
-    });
-  }
-});
 
 function speak(words) {
   //console.log(words);
