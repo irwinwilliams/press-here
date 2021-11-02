@@ -8,7 +8,7 @@
   initialState: {
     enemyPosition: {x: 0, y: 1, z: 2},
     gameStages: stages,
-    currentStageIndex:0,
+    currentStageIndex:5,
     currentStageItems:stages[0].items,
     currentStage:stages[0],
     seen:[]
@@ -18,17 +18,20 @@
     interact: function(state, item)
     {
       console.log("in interact");
-      console.log(item);
-      console.log(item.item.attributes["index"]);
-      var idx= item.item.attributes["index"].value;
-      if (!state.seen[idx])
+      console.log(state);
+      //console.log(item.item.attributes["index"]);
+      var idx= item.item.attributes["index"];
+      console.log(state.seen[idx.value]);
+      if (!state.seen.hasOwnProperty(idx.value))
         state.gameStages[state.currentStageIndex].interactions++;
       
-      state.seen[idx] = "seen";
+      state.seen[idx.value] = "seen";
     },
     advanceStage: function(state, event)
     {
-      if (state.gameStages[state.currentStageIndex].interactions == state.currentStageItems.length)
+      console.log("in advance");
+      
+      if (state.gameStages[state.currentStageIndex].interactions >= state.currentStageItems.length)
         {
           state.seen = [];
           //state.currentStageItems = [];
@@ -44,6 +47,7 @@
               return;
             }
           state.currentStageItems.push(...stages[state.currentStageIndex].items);
+          state.currentStage = stages[state.currentStageIndex];
           //state.currentStageItems = stages[++state.currentStageIndex].items
           console.log(state.currentStageItems);
           

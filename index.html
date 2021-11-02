@@ -74,6 +74,8 @@
           text="value: ${words};"
         ></a-entity>
       </a-assets>
+      <a-text id="stageName" bind__text="value: currentStage.index" text="align: center; width: 4;color: #000;" position="0 2 -5" >
+      </a-text>
 
       <a-entity id="stageManager"
         bind-for="for: item; in: currentStageItems; key: index;">
@@ -86,7 +88,7 @@
                 nextcolor="{{nextcolor}}"
                 colorfollow="target: {{colorfollow}}; nextcolor: #4169e1"
                 color="{{color}}" shadow
-                index="{{pos}}"
+                index="{{index}}"
                 data-colorfollow></a-sphere>
             
         </template>
