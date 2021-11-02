@@ -8,7 +8,7 @@
   initialState: {
     enemyPosition: {x: 0, y: 1, z: 2},
     gameStages: stages,
-    currentStageIndex:5,
+    currentStageIndex:0,
     currentStageItems:stages[0].items,
     currentStage:stages[0],
     seen:[]

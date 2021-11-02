@@ -69,13 +69,26 @@ function make(template, stageIndex, itemIndex)
   return obj;
 }
 
+function smallTalk(stage, itemIndexArr, textArr)
+{
+  for (var i=0;i<stage.items.length;i++)
+  {
+    stage.items[i].text = SILENT;
+  }
+
+  for (var i=0;i<itemIndexArr.length;i++)
+  {
+    stage.items[itemIndexArr[i]].text = textArr[itemIndexArr[i]];
+  }
+}
+
+
 var stage1 = make(stageTemplate, "s1");
 
 var s1it1 = make(itemTemplate,stage1.index, 1);
-s1it1.text = "Focus here - then look to your right!";
-s1it1.target = "#sphere2";
+stage1.items.push(s1it1);
+smallTalk(stage1, [0], ["Focus here - then look to your right!"]);
 label(s1it1, stage1, 1);
-stage1.items.push( s1it1);
 activate(stage1, 0);
 
 var stage2 = make(stage1, "s2");
@@ -87,8 +100,6 @@ s2it2.text= "Great! You got me! Now press the middle dot again";
 s2it2.pos = "3 0.25 -5"
 stage2.items.push(s2it2);
 activate(stage2, 1);
-
-
 
 
 var stage3 = make(stage2, "s3");
@@ -123,7 +134,7 @@ activate(stage6, 1);
 var stage7 = make(stage6, "s7");
 stage7.interactions = 8;
 var s7it1 = stage7.items[0];
-s7it1.text = "and take a peek at the red";
+s7it1.text = "Take a peek at the red";
 var movAmt = 1;
 for (var i=4,j=1;i<6;i++,j++)
   {
