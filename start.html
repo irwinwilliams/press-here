@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <script>
+      function play()
+      {
+        const lecture = new SpeechSynthesisUtterance('hello, there!');
+        lecture.volume = 10;
+        speechSynthesis.speak(lecture);
+        
+        window.location = "index.html";
+      }
+    </script>
+  </head>
+  <body>
+    <button onclick="return play();">
+      Play!
+    </button>
+  </body>
+</html>

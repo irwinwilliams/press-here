@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Press Here!</title>
+    <meta name="description" content="Press here" />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="scripts/components/state-component-from-gh.js"></script>
+    <!--<script src="https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.min.js"></script>-->
+    <!--<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>-->
+    <!--<script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>-->
+    <!--<script src="https://unpkg.com/aframe-state-component@6.7.0/dist/aframe-state-component.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+
+    <script src="scripts/queue.js"></script>
+    <script src="scripts/stages.js"></script>
+    <script src="scripts/stateManagement.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/components/talker.js"></script>
+    <script src="scripts/components/stage-changer.js"></script>
+    <style>
+      #playBtnContainer {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        background-color: white;
+      }
+      #playBtn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="playBtnContainer">
+      <button id="playBtn" onclick="return play()">
+        Play!
+      </button>
+    </div>
+    <!--<a-scene embedded arjs='sourceType:webcam'>-->
+    <a-scene>
+      <a-assets>
+        <a-mixin id="text" text="align: center; width: 3;"></a-mixin>
+
+        <script id="bubble" type="text/html">
+          <a-sphere
+            buddy="target: ${target}"
+            talker="${words}"
+            radius="0.25"
+            nextcolor="${nextcolor}"
+            colorfollow="target: ${colorfollow}; nextcolor: #4169e1"
+            bind__visible="!!enabled"
+            color="#FFCC00" shadow>
+          </a-sphere>
+        </script>
+        <script id="bubbleGroup" type="text/html">
+          <a-sphere radius="0.25" dynamic-body="mass:10" position="0  6 0"  color="${groupcolor}" shadow></a-sphere>
+          <a-sphere radius="0.25" dynamic-body="mass:0" position="0  3 0"  color="${groupcolor}" shadow></a-sphere>
+          <a-sphere radius="0.25" dynamic-body="mass:10" position="0  0 0"  color="${groupcolor}" shadow></a-sphere>
+          <a-sphere radius="0.25" dynamic-body="mass:0" position="0 -3 0"  color="${groupcolor}" shadow></a-sphere>
+          <a-sphere radius="0.25" dynamic-body="mass:10"  position="0 -6 0"  color="${groupcolor}" shadow></a-sphere>
+        </script>
+        <a-entity
+          mixin="text"
+          position="0.25 -0.4 0.1"
+          text="value: ${words};"
+        ></a-entity>
+      </a-assets>
+      <a-text id="stageName" bind__text="value: currentStage.index" text="align: center; width: 4;color: #000;" position="0 2 -5" >
+      </a-text>
+
+      <a-entity id="stageManager"
+        bind-for="for: item; in: currentStageItems; key: index;">
+        <template>
+              <a-sphere
+                talker="{{text}}"
+                stage-changer="{{activator}}"
+                position="{{pos}}"
+                radius="0.25"
+                nextcolor="{{nextcolor}}"
+                colorfollow="target: {{colorfollow}}; nextcolor: #4169e1"
+                color="{{color}}" shadow
+                index="{{index}}"
+                data-colorfollow></a-sphere>
+            
+        </template>
+      </a-entity>
+<!--
+      <a-entity
+        id="sphere1"
+        template="src: #bubble"
+        position="0 0.25 -5"
+        data-words="Focus here - then look to your right!|OK, now look to your left!|Alas! Look at the one of the left"
+        data-target="#sphere2"
+        data-nextcolor
+        data-leveltwo="#yellowspheregroup"
+        leveltwo="target: #yellowspheregroup"
+        data-colorfollow
+      ></a-entity>
+
+      <a-entity
+        id="sphere2"
+        template="src: #bubble"
+        position="3 0.25 -5"
+        data-words="Great, now press the first sphere again!|Tee, hee! Look at the middle sphere"
+        data-target="#sphere3"
+        data-nextcolor
+        data-colorfollow="#sphere3"
+        data-leveltwo="#bluespheregroup"
+        leveltwo="target: #bluespheregroup"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="sphere3"
+        template="src: #bubble"
+        position="-3 0.25 -5"
+        data-words="Nice, now, look back at the guy on the far right"
+        data-target="#sphere3"
+        data-nextcolor="#AE0700"
+        data-colorfollow
+        data-leveltwo="#redspheregroup"
+        leveltwo="target: #redspheregroup"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="yellowspheregroup"
+        data-groupcolor="#FFCC00"
+        visible="false"
+        template="src: #bubbleGroup"
+        position="0 1.25 -5"
+      >
+      </a-entity>
+
+      <a-entity
+        id="redspheregroup"
+        data-groupcolor="#AE0700"
+        visible="false"
+        template="src: #bubbleGroup"
+        position="-3 1.25 -5"
+      >
+      </a-entity>
+
+      <a-box
+        id="bluespheregroup"
+        dynamic-body=""
+        data-groupcolor="#4169e1"
+        visible="false"
+        template="src: #bubbleGroup"
+        position="3 1.25 -5"
+      >
+      </a-box>
+-->
+
+      <a-plane
+        static-body
+        material="side:double;color: #15e06d; height: 500"
+        geometry=""
+        velocity=""
+        rotation="90 0 0"
+        position="-0.03244 -8 -5"
+        scale="10 10 1"
+      ></a-plane>
+
+      <a-entity camera look-controls wasd-controls="acceleration:100">
+        <a-entity
+          cursor="fuse: true; fuseTimeout: 500"
+          position="0 0 -1"
+          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+          material="color: black; shader: flat"
+        >
+        </a-entity>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
