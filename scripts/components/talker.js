@@ -24,8 +24,8 @@ function play()
   generalVoice.voice = selectedVoice;
   generalVoice.rate = 0.9;
   generalVoice.pitch = 0.9;
-  speechSynthesis.speak(generalVoice);
-  //console.log("TALK: hello, there");
+  //speechSynthesis.speak(generalVoice);
+  console.log("TALK: hello, there");
   playBtnContainer.style.display = "none"
 }
 
@@ -47,8 +47,8 @@ AFRAME.registerComponent("talker", {
     //queue.enqueueAll(wordArr);
 
     this.handleTalk = function() {
-      console.log("talker!");
-      console.log(this);
+      //console.log("talker!");
+      //console.log(this);
       voices = window.speechSynthesis.getVoices();
       
       if (el.getAttribute("visible") != true) return;
@@ -74,8 +74,8 @@ AFRAME.registerComponent("talker", {
       if (words)
       {
         generalVoice.text = words;
-        speechSynthesis.speak(generalVoice);
-        //console.log("TALK: "+words);
+        //speechSynthesis.speak(generalVoice);
+        console.log("TALK: "+words);
       }
       
       //el.parentNode.removeChild(el);
@@ -89,6 +89,6 @@ AFRAME.registerComponent("talker", {
   remove: function()
   {
     this.el.removeEventListener('click', this.handleTalk);
-    console.log("removed click from");
+    //console.log("removed click from");
   }
 });

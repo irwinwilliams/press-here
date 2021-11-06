@@ -83,8 +83,8 @@ AFRAME.registerComponent('colorfollow', {
     var target = this.data.target;
     var nextcolor = this.data.nextcolor;
     el.addEventListener("click", function() {
-      console.log(target);
-      console.log(nextcolor);
+      //console.log(target);
+      //console.log(nextcolor);
       var alreadyVisible = el.getAttribute("visible");
       var partnercolorchanged = confirmParterColorChanged(target);
       if (alreadyVisible && partnercolorchanged)

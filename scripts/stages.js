@@ -1,22 +1,25 @@
 const SILENT = "";
 
 var itemTemplate = 
-    {
-      name:"t",
-      activator:false,
-      mark:0,
-      index:"-0",
-      target:null,
-      pos:"0 0.25 -5",
-      text:"",
-      color:"#FFCC00",
-      isRaycastable:false,
-      eventListeners:[],
-      currentEventIndex:0,
-      pressFn:function(){console.log("pressed");},
-      unpressFn:function(){console.log("unpressed");},
-      nextStage:function(){console.log("next stage");},
-    }
+{
+  type:"item",
+  name:"t",
+  activator:false,
+  mark:0,
+  index:"-0",
+  stageIndex:"",
+  target:null,
+  pos:"0 0.25 -5",
+  text:"",
+  color:"#FFCC00",
+  isRaycastable:false,
+  eventListeners:[],
+  currentEventIndex:0,
+  pressFn:function(){console.log("pressed");},
+  unpressFn:function(){console.log("unpressed");},
+  nextStage:function(){console.log("next stage");}
+}
+
 var stageTemplate = {
   type:"stage",
   items:[],
@@ -65,6 +68,7 @@ function make(template, stageIndex, itemIndex)
   else
     {
       obj.index = `${stageIndex}-${itemIndex}`;
+      obj.stage = stageIndex;
     }
   return obj;
 }
@@ -78,127 +82,116 @@ function smallTalk(stage, itemIndexArr, textArr)
 
   for (var i=0;i<itemIndexArr.length;i++)
   {
-    stage.items[itemIndexArr[i]].text = textArr[itemIndexArr[i]];
+    stage.items[itemIndexArr[i]].text = textArr[i];
   }
+}
+
+function shuffle(stage, indexes)
+{
+  for (var i=0;i<stage.items.length;i++)
+  {
+    var prevPos = stage.items[i].pos;
+    var locs = prevPos.split(" ");
+    locs[0] = locs[0]*1.0;
+    locs[1] = locs[1]*1.0;
+    locs[2] = locs[2]*1.0;
+    var nextX = 1 * (locs[0] * Math.random() + locs[0]);
+    var nextY = 1* (locs[1] * Math.random() + locs[1]);
+
+    var nextPos = `${nextX}  ${nextY} -5`;
+    stage.items[i].pos = nextPos;
+    console.log(nextPos);
+  }
+
 }
 
 
 var stage1 = make(stageTemplate, "s1");
-
 var s1it1 = make(itemTemplate,stage1.index, 1);
 stage1.items.push(s1it1);
-smallTalk(stage1, [0], ["Focus here - then look to your right!"]);
-label(s1it1, stage1, 1);
-activate(stage1, 0);
 
 var stage2 = make(stage1, "s2");
-var s2it1 = stage2.items[0];
-s2it1.text = SILENT;
-s2it1.pos = "0 0.25 -5"
-var s2it2 = make(itemTemplate, stage2.index, 2);
-s2it2.text= "Great! You got me! Now press the middle dot again";
-s2it2.pos = "3 0.25 -5"
+var s2it2  = make(itemTemplate, stage2.index, 2);
+s2it2.pos  = "3 0.25 -5";
 stage2.items.push(s2it2);
-activate(stage2, 1);
-
 
 var stage3 = make(stage2, "s3");
-var s3it1 = stage3.items[0];
-s3it1.text = "Perfect. Now, gaze at the sphere on the left until it shakes a bit";
-var s3it2 = stage3.items[1];
-s3it2.text = SILENT;
-activate(stage3, 0);
 
 var stage4 = make(stage3, "s4");
-stage4.interactions = 1;
 var s4it3 = make(itemTemplate, stage4.index, 3);
 s4it3.pos = "-3 0.25 -5"
-s4it3.text = "Good, we're cooking with gas! Look back at the middle sphere."
 stage4.items.push(s4it3);
-activate(stage4, 2);
 
 var stage5 = make(stage4, "s5");
-stage5.interactions = 1;
-stage5.items[0].text = "Well done! Now, gaze at the sphere on the right... until it shakes too";
-stage5.items[2].text = SILENT;
 stage5.items[2].color= "#FF0000";
-activate(stage5, 0);
 
 var stage6 = make(stage5, "s6");
-stage6.items[0].text = SILENT;
-stage6.items[1].color = "#0000FF";
-stage6.items[1].text = "Fabulous! Press the yellow now";
 
-activate(stage6, 1);
+var stage7 = make(stage5, "s7");
+stage7.items[1].color = "#0000FF";
 
-var stage7 = make(stage6, "s7");
-stage7.interactions = 8;
-var s7it1 = stage7.items[0];
-s7it1.text = "Take a peek at the red";
+
+var stage8 = make(stage7, "s8");
+var s8it1 = stage8.items[0];
 var movAmt = 1;
 for (var i=4,j=1;i<6;i++,j++)
   {
-    var s7it = make(s7it1, stage7.index, i);
-    s7it.pos = `0 ${0.25+(j*movAmt)} -5`;
-    stage7.items.push(s7it);
+    var s9it = make(s8it1, stage8.index, i);
+    s9it.pos = `0 ${0.25+(j*movAmt)} -5`;
+    stage8.items.push(s9it);
   }
 
 for (var i=7,j=1;i<9;i++,j++)
   {
-    var s7it = make(s7it1, stage7.index, i);
-    s7it.pos = `0 ${0.25-(j*movAmt)} -5`;
-    stage7.items.push(s7it);
+    var s9it = make(s8it1, stage8.index, i);
+    s9it.pos = `0 ${0.25-(j*movAmt)} -5`;
+    stage8.items.push(s9it);
   }
 
-stage7.items[1].text = SILENT;
 
-activate(stage7, 0);
+var stage9 = make(stage8, "s9");
 
-var stage8 = make(stage7, "s8");
-stage8.interactions = 8;
+var s9it3 = stage9.items[2];
 
-var s8it3 = stage8.items[2];
-s8it3.text = "finally, take a peek at the blue";
-//var movAmt = 1;
+movAmt = 1;
 for (var i=10,j=1;i<12;i++,j++)
   {
-    var s8it = make(s8it3, stage8.index, i);
-    s8it.pos = `-3 ${0.25+(j*movAmt)} -5`;
-    stage8.items.push(s8it);
+    var s9it = make(s9it3, stage9.index, i);
+    s9it.pos = `-3 ${0.25+(j*movAmt)} -5`;
+    stage9.items.push(s9it);
   }
 
 for (var i=13,j=1;i<15;i++,j++)
   {
-    var s8it = make(s8it3, stage8.index, i);
-    s8it.pos = `-3 ${0.25-(j*movAmt)} -5`;
-    stage8.items.push(s8it);
+    var s9it = make(s9it3, stage9.index, i);
+    s9it.pos = `-3 ${0.25-(j*movAmt)} -5`;
+    stage9.items.push(s9it);
   }
 
-stage8.items[0].text = SILENT;
-activate(stage8, 2);
 
-var stage9 = make(stage8, "s9");
-stage9.interactions = 8;
+var stage10 = make(stage9, "s10");
+stage10.interactions = 8;
 
-var s9it2 = stage8.items[1];
-s9it2.text = "Perfect. Now, quickly touch all three in the center row! Starting from the left";
+var s10it2 = stage10.items[1];
 //var movAmt = 1;
 for (var i=16,j=1;i<18;i++,j++)
   {
-    var s9it = make(s9it2, stage9.index, i);
-    s9it.pos = `3 ${0.25+(j*movAmt)} -5`;
-    stage9.items.push(s9it);
+    var s10it = make(s10it2, stage10.index, i);
+    s10it.pos = `3 ${0.25+(j*movAmt)} -5`;
+    stage10.items.push(s10it);
   }
 
 for (var i=18,j=1;i<20;i++,j++)
   {
-    var s9it = make(s9it2, stage9.index, i);
-    s9it.pos = `3 ${0.25-(j*movAmt)} -5`;
-    stage9.items.push(s9it);
+    var s10it = make(s10it2, stage10.index, i);
+    s10it.pos = `3 ${0.25-(j*movAmt)} -5`;
+    stage10.items.push(s10it);
   }
 
-stage9.items[1].text = SILENT;
-activate(stage9, 0);
+var stage11 = make(stage10, "s11");
+
+var stage12 = make(stage11, "s12");
+shuffle(stage12, [10, 9, 2, 7, 8]);
 
 stages.push(stage1);
 stages.push(stage2);
@@ -208,3 +201,33 @@ stages.push(stage5);
 stages.push(stage6);
 stages.push(stage7);
 stages.push(stage8);
+stages.push(stage9);
+stages.push(stage10);
+stages.push(stage11);
+stages.push(stage12);
+
+activate(stage1, 0);
+activate(stage2, 1);
+activate(stage3, 0);
+activate(stage4, 2);
+activate(stage5, 0);
+activate(stage6, 1);
+activate(stage7, 0);
+activate(stage8, 2);
+activate(stage9, 1);
+activate(stage10, 1);
+activate(stage11, 8);
+activate(stage12, 0);
+
+
+
+smallTalk(stage1, [0], ["Focus here - then look to your right!"]);
+smallTalk(stage2, [1], ["Great! You got me! Now press the middle dot again"]);
+smallTalk(stage3, [0], ["Perfect. Now, gaze at the sphere on the left until it shakes a bit"]);
+smallTalk(stage4, [2], ["Good, we're cooking with gas! Look back at the middle sphere."]);
+smallTalk(stage5, [0], ["Well done! Now, gaze at the sphere on the right... until it shakes too"]);
+smallTalk(stage7, [1], ["Fabulous! Press the yellow now"]);
+smallTalk(stage8, [0], ["Take a peek at the red"]);
+smallTalk(stage9, [2], ["Finally, take a peek at the blue"]);
+smallTalk(stage10, [1], ["Perfect. Now, look at the top red one!"]);
+smallTalk(stage11, [0], ["Nice! Press the middle yellow!"]);
