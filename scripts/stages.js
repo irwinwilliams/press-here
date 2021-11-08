@@ -99,8 +99,8 @@ function shuffle(stage, indexes)
     var nextY = 1* (locs[1] * Math.random() + locs[1]);
 
     var nextPos = `${nextX}  ${nextY} -5`;
-    stage.items[i].pos = nextPos;
-    console.log(nextPos);
+    stage.items[i].pos = prevPos;
+    stage.items[i].movement =`property: position; to: ${nextPos}; dur: 2000; easing: linear; loop: false`; 
   }
 
 }

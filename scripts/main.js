@@ -116,6 +116,50 @@ AFRAME.registerComponent('nextcolor', {
   }
 });
 
+//add an aframe reset button
+AFRAME.registerComponent('start-over', {
+  init: function() {
+    var el = this.el;
+   
+    el.addEventListener("click", function() {
+      el.sceneEl.emit('startOver', {});
+    });
+  }
+});
+
+//add an aframe back button
+AFRAME.registerComponent('step-back', {
+  init: function() {
+    var el = this.el;
+    el.addEventListener("click", function() {
+      el.sceneEl.emit('back', {});
+    });
+  }
+});
+
+
+//aframe rotate towards camera
+AFRAME.registerComponent('rotate-towards-camera', {
+  schema: {
+  },
+  init: function() {
+    var el = this.el;
+
+    var camera = document.querySelector("#camera");
+    var cameraPosition = camera.getAttribute("position");
+    var targetPosition = el.getAttribute("position");
+    var direction = new THREE.Vector3().subVectors(cameraPosition, targetPosition).normalize();
+    var rotation = new THREE.Euler().setFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction));
+    el.setAttribute("rotation", {x: rotation.x, y: rotation.y, z: rotation.z});
+  }
+});
+
+
+
+
+
+
+
 
 
 function speak(words) {

@@ -62,8 +62,23 @@ const startingPoint = 10;
           console.log("NEW STAGE!"+ state.currentStage.index);
         }
     },
-    enemyMoved: function (state, action) {
-      state.enemyPosition = action.newPosition;
+    startOver: function (state, action) {
+      this.goToStage(state, 0);
+    },
+    back: function (state, action) {
+      this.goToStage(state, state.currentStageIndex - 1);
+    },
+    goToStage: function (state, location) {
+      if (state.currentStageIndex > 0)
+      {
+        state.currentStageIndex = location;
+        state.seen = [];
+        state.currentStageItems.__dirty = true;
+        while (state.currentStageItems.length) { state.currentStageItems.pop(); }
+      
+        state.currentStageItems.push(...stages[state.currentStageIndex].items);
+        state.currentStage = stages[state.currentStageIndex];
+      }
     }
   },
 });
