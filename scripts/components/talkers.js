@@ -18,13 +18,15 @@ function play()
           selectedVoice = voices[i];
         }
       }
-      
+  //use speech synthesis in JavaScript
+   
+
   generalVoice = new SpeechSynthesisUtterance('hello, there!');
-  generalVoice.volume = 10;
+  generalVoice.volume = 8;
   generalVoice.voice = selectedVoice;
   generalVoice.rate = 0.9;
-  generalVoice.pitch = 0.9;
-  //speechSynthesis.speak(generalVoice);
+  generalVoice.pitch = 0.95;
+  speechSynthesis.speak(generalVoice);
   console.log("TALK: hello, there");
   playBtnContainer.style.display = "none"
 }
@@ -74,7 +76,7 @@ AFRAME.registerComponent("talker", {
       if (words)
       {
         generalVoice.text = words;
-        //speechSynthesis.speak(generalVoice);
+        speechSynthesis.speak(generalVoice);
         console.log("TALK: "+words);
       }
       
