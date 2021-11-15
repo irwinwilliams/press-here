@@ -3,7 +3,7 @@
 /* global stages */
 /* global playBtnContainer */
 
-const startingPoint = 7;
+const startingPoint = 0;
 
  AFRAME.registerState({
   initialState: {

@@ -128,9 +128,13 @@ function shuffle(stage, direction)
 
 var stage1 = make(stageTemplate, "s1");
 var s1it1 = make(itemTemplate,stage1.index, 1);
+s1it1.pos = "1 4 -5";
+s1it1.movement = `property: position; to: 1 0.25 -5; dur: 5000; easing: linear; loop: false`;
 stage1.items.push(s1it1);
 
 var stage2 = make(stage1, "s2");
+stage2.items[0].movement = "";
+stage2.items[0].pos = "1 0.25 -5";
 var s2it2  = make(itemTemplate, stage2.index, 2);
 s2it2.pos  = "5 0.25 -5";
 stage2.items.push(s2it2);
