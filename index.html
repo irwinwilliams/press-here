@@ -4,17 +4,11 @@
     <meta charset="utf-8" />
     <title>Press Here!</title>
     <meta name="description" content="Press here" />
-    <!-- <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script> -->
-    <!-- <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script> -->
     <script src="scripts/aframe.1.2.0.min.js"></script>
     <script src="scripts/aframe-physics-system.4.0.1.min.js"></script>
     <script src="scripts/aframe-look-at-component.0.8.0.min.js"></script>
     <script src="scripts/components/state-component-from-gh.js"></script>
-    <!--<script src="https://unpkg.com/aframe-state-component@7.1.0/dist/aframe-state-component.min.js"></script>-->
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <!--<script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>-->
-    <!--<script src="https://unpkg.com/aframe-state-component@6.7.0/dist/aframe-state-component.min.js"></script>-->
 
     <script src="scripts/queue.js"></script>
     <script src="scripts/stages.js"></script>
@@ -80,7 +74,6 @@
       </a-assets>
 
 
-
       <a-text 
       position="0 4 -5"
       id="stageName" 
@@ -102,11 +95,6 @@
       material="opacity: 0.5" rotate-towards-camera step-back>
         <a-text value="Back" position="" rotation="" scale="" color="#000" text="value: Back"></a-text>
       </a-entity>
-<!-- 
-      <a-sphere position="3 1.25 -5" radius="0.25" color="#FF3311" >
-        <a-animation attribute="position" to="0  2.0922915802118127 -5" fill="forwards"></a-animation>
-    </a-sphere> -->
-
 
       <a-entity id="stageManager"
         bind-for="for: item; in: currentStageItems; key: index;">
@@ -127,83 +115,6 @@
             
         </template>
       </a-entity>
-<!--
-      <a-entity
-        id="sphere1"
-        template="src: #bubble"
-        position="0 0.25 -5"
-        data-words="Focus here - then look to your right!|OK, now look to your left!|Alas! Look at the one of the left"
-        data-target="#sphere2"
-        data-nextcolor
-        data-leveltwo="#yellowspheregroup"
-        leveltwo="target: #yellowspheregroup"
-        data-colorfollow
-      ></a-entity>
-
-      <a-entity
-        id="sphere2"
-        template="src: #bubble"
-        position="3 0.25 -5"
-        data-words="Great, now press the first sphere again!|Tee, hee! Look at the middle sphere"
-        data-target="#sphere3"
-        data-nextcolor
-        data-colorfollow="#sphere3"
-        data-leveltwo="#bluespheregroup"
-        leveltwo="target: #bluespheregroup"
-        visible="false"
-      ></a-entity>
-
-      <a-entity
-        id="sphere3"
-        template="src: #bubble"
-        position="-3 0.25 -5"
-        data-words="Nice, now, look back at the guy on the far right"
-        data-target="#sphere3"
-        data-nextcolor="#AE0700"
-        data-colorfollow
-        data-leveltwo="#redspheregroup"
-        leveltwo="target: #redspheregroup"
-        visible="false"
-      ></a-entity>
-
-      <a-entity
-        id="yellowspheregroup"
-        data-groupcolor="#FFCC00"
-        visible="false"
-        template="src: #bubbleGroup"
-        position="0 1.25 -5"
-      >
-      </a-entity>
-
-      <a-entity
-        id="redspheregroup"
-        data-groupcolor="#AE0700"
-        visible="false"
-        template="src: #bubbleGroup"
-        position="-3 1.25 -5"
-      >
-      </a-entity>
-
-      <a-box
-        id="bluespheregroup"
-        dynamic-body=""
-        data-groupcolor="#4169e1"
-        visible="false"
-        template="src: #bubbleGroup"
-        position="3 1.25 -5"
-      >
-      </a-box>
--->
-
-      <!-- <a-plane
-        static-body
-        material="side:double;color: #15e06d; height: 500"
-        geometry=""
-        velocity=""
-        rotation="90 0 0"
-        position="-0.03244 -8 -5"
-        scale="10 10 1"
-      ></a-plane> -->
 
       <a-entity id="camera" camera look-controls wasd-controls="acceleration:100" cursor="rayOrigin: mouse">
         <a-entity
